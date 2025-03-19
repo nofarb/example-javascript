@@ -3,8 +3,7 @@
   "version": "0.0.1",
   "description": "Codecov Example Javascript",
   "scripts": {
-    "test": "vitest run --coverage",
-    "test2": "vitest run --coverage --coverageReporters=lcov --coverageReporters=text --coverageReporters=html"
+    "test": "vitest run --coverage --coverageReporters=lcov --coverageReporters=text --coverageReporters=html"
 
   },
   "dependencies": {
