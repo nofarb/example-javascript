@@ -18,8 +18,10 @@ jobs:
           name: Run tests and collect coverage
           command: |
             npx vitest run
+            sleep 5
             echo "Listing all files in the coverage directory:"
             find $CIRCLE_WORKING_DIRECTORY/coverage -type f
+            ls -R $CIRCLE_WORKING_DIRECTORY
       - store_artifacts:
           path: coverage/coverage-final.json  # Store the JSON coverage data
           destination: coverage-report-json  # Optional: Custom artifact folder in CircleCI UI
