@@ -10,10 +10,13 @@ jobs:
       - checkout
       - run:
           name: Install dependencies
-          command: npm install
+          command: |
+            npm install --save-dev jest
+            npm install
       - run:
           name: Run tests and collect coverage
           command: npm run test
+            
       - store_artifacts:
           path: coverage/coverage-final.json 
           destination: coverage-report
