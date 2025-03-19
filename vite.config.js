@@ -3,9 +3,9 @@ import { defineConfig } from 'vitest/config'
 export default defineConfig({
   test: {
     coverage: {
-      provider: 'v8',  // Use the V8 coverage provider
-      reporters: ['text', 'json', 'html', 'lcov'],  // Added 'html' and 'lcov' for HTML report
-      reportDir: 'coverage',  // Specify the output directory for coverage reports
+      provider: 'v8',  // Use V8 as the coverage provider
+      reporters: ['text', 'json', 'html', 'lcov'],  // Include 'html' and 'lcov' for HTML and LCOV reports
+      reportDir: 'coverage',  // Optional: specify the directory for coverage reports
     },
   },
 })
