@@ -11,13 +11,12 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            npm install --save-dev jest
-            npm install --save-dev vitest
+            npm install --save-dev jest jest-environment-jsdom codecov
             npm install
       - run:
           name: Run tests and collect coverage
           command: |
-            npx vitest run
+            npx jest --coverage
             sleep 5
             echo "Listing all files in the coverage directory:"
             ls -R $CIRCLE_WORKING_DIRECTORY
