@@ -16,7 +16,13 @@ jobs:
             npm install
       - run:
           name: Run tests and collect coverage
-          command: npm run test
+          command: |
+            npm run test
+            cd coverage
+            ls
+            cd ..
+            cd coverage/lcov-report
+            ls
             
       - store_artifacts:
           path: coverage/coverage-final.json  # Store the JSON coverage data
