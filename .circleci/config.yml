@@ -18,7 +18,6 @@ jobs:
           name: Run tests and collect coverage
           command: |
             npm run test
-            npx vitest run
       - store_artifacts:
           path: coverage/coverage-final.json  # Store the JSON coverage data
           destination: coverage-report-json  # Optional: Custom artifact folder in CircleCI UI
