@@ -4,7 +4,8 @@
   "description": "Codecov Example Javascript",
   "scripts": {
     "test": "vitest run --coverage",
-    "test2": "jest --coverage --coverageReporters=lcov --coverageReporters=text --coverageReporters=html"
+    "test2": "vitest run --coverage --coverageReporters=lcov --coverageReporters=text --coverageReporters=html"
+
   },
   "dependencies": {
     "vitest": "^3.0.0",
