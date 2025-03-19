@@ -18,11 +18,13 @@ jobs:
           command: npm run test
             
       - store_artifacts:
-          path: coverage/coverage-final.json 
-          destination: coverage-report-json
-        - store_artifacts:
-          path: coverage/lcov-report
-          destination: coverage-report-html
+          path: coverage/coverage-final.json  # Store the JSON coverage data
+          destination: coverage-report-json  # Optional: Custom artifact folder in CircleCI UI
+      - store_artifacts:
+          path: coverage/lcov-report  # Store the HTML coverage report
+          destination: coverage-report-html  # Optional: Custom artifact folder in CircleCI UI
+
+        
       - codecov/upload
 
 workflow:
