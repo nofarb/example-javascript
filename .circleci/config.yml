@@ -1,4 +1,5 @@
 version: 2.1
+
 orbs:
   codecov: codecov/codecov@3
 
@@ -8,29 +9,60 @@ jobs:
       - image: cimg/node:current
     steps:
       - checkout
+
+      # ✅ Load previously cached files (50MB dummy cache)
+      - restore_cache:
+          keys:
+            - build-cache-v1
+
       - run:
           name: Install dependencies
           command: |
             npm install --save-dev @babel/preset-env @babel/register
             npm install
+
+      - run:
+          name: Simulate large cache file (50MB)
+          command: |
+            mkdir -p ./build-cache
+            dd if=/dev/urandom bs=1M count=50 status=none | base64 > ./build-cache/cache.data
+
+      - save_cache:
+          key: build-cache-v1
+          paths:
+            - ./build-cache
+
       - run:
           name: Run tests and collect coverage
           command: |
             npx jest --coverage
             sleep 5
             echo "Listing all files in the coverage directory:"
-            ls -R $CIRCLE_WORKING_DIRECTORY
             find $CIRCLE_WORKING_DIRECTORY/coverage -type f
+
+      # ✅ Simulate additional bug artifacts (~100MB)
+      - run:
+          name: Simulate bug artifacts
+          command: |
+            mkdir -p ./bug-artifacts
+            dd if=/dev/urandom bs=1M count=100 status=none | base64 > ./bug-artifacts/bug-report.log
+
+      # ✅ Store bug artifacts
       - store_artifacts:
-          path: coverage/coverage-final.json  # Store the JSON coverage data
-          destination: coverage-report-json  # Optional: Custom artifact folder in CircleCI UI
+          path: ./bug-artifacts/bug-report.log
+          destination: bug-log-100mb
+
+      # ✅ Store coverage reports (unchanged)
       - store_artifacts:
-          path: coverage/lcov-report  # Store the HTML coverage report
-          destination: coverage-report-html  # Optional: Custom artifact folder in CircleCI UI
+          path: coverage/coverage-final.json
+          destination: coverage-report-json
+      - store_artifacts:
+          path: coverage/lcov-report
+          destination: coverage-report-html
 
       - codecov/upload
 
-workflow:
+workflows:
   version: 2.1
   build-test:
     jobs:
