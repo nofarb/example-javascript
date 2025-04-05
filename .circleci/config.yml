@@ -69,7 +69,7 @@ jobs:
 
       - codecov/upload
 
-workflow:
+workflows:
   version: 2.1
   build-test:
     jobs:
