@@ -3,45 +3,6 @@ orbs:
   codecov: codecov/codecov@3
 
 jobs:
-  stage-one:
-    macos:
-      xcode: "15.4.0"
-    resource_class: macos.m1.medium.gen1
-
-
-    steps:
-      - run:
-          name: Stage One
-          command: |
-            echo "Starting stage one"
-            sleep 40
-            echo "Finished stage one"
-
-  stage-two:
-    macos:
-      xcode: "15.4.0"
-    resource_class: macos.m1.medium.gen1
-    steps:
-      - run:
-          name: Stage Two
-          command: |
-            echo "Starting stage two"
-            sleep 30
-            echo "Finished stage two"
-
-  stage-three:
-    macos:
-      xcode: "15.4.0"
-    resource_class: macos.m1.medium.gen1
-    steps:
-      - run:
-          name: Stage Three
-          command: |
-            echo "Starting stage three"
-            sleep 30
-            echo "Finished stage three"
-
-  
   build:
     docker:
       - image: cimg/node:current
@@ -61,11 +22,21 @@ jobs:
             ls -R $CIRCLE_WORKING_DIRECTORY
             find $CIRCLE_WORKING_DIRECTORY/coverage -type f
       - store_artifacts:
-          path: coverage/coverage-final.json  # Store the JSON coverage data
-          destination: coverage-report-json  # Optional: Custom artifact folder in CircleCI UI
+          path: coverage/coverage-final.json
+          destination: coverage-report-json
       - store_artifacts:
-          path: coverage/lcov-report  # Store the HTML coverage report
-          destination: coverage-report-html  # Optional: Custom artifact folder in CircleCI UI
+          path: coverage/lcov-report
+          destination: coverage-report-html
+
+      - run:
+          name: Create large dummy zip file (500MB)
+          command: |
+            mkdir -p dummy-data
+            dd if=/dev/urandom of=dummy-data/random.bin bs=1M count=500
+            zip -r dummy-artifact.zip dummy-data
+      - store_artifacts:
+          path: dummy-artifact.zip
+          destination: dummy-large-file
 
       - codecov/upload
 
@@ -74,6 +45,3 @@ workflows:
   build-test:
     jobs:
       - build
-      - stage-one
-      - stage-two
-      - stage-three
