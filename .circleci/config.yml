@@ -13,17 +13,20 @@ jobs:
           command: |
             npm install --save-dev @babel/preset-env @babel/register
             npm install
+
       - run:
           name: Run tests and collect coverage
           command: |
             npx jest --coverage
             sleep 5
             echo "Listing all files in the coverage directory:"
-            ls -R $CIRCLE_WORKING_DIRECTORY
+            ls -R $CIRCLE_WORKING_DIRECTORY/coverage
             find $CIRCLE_WORKING_DIRECTORY/coverage -type f
+
       - store_artifacts:
           path: coverage/coverage-final.json
           destination: coverage-report-json
+
       - store_artifacts:
           path: coverage/lcov-report
           destination: coverage-report-html
@@ -34,6 +37,7 @@ jobs:
             mkdir -p dummy-data
             dd if=/dev/urandom of=dummy-data/random.bin bs=1M count=500
             zip -r dummy-artifact.zip dummy-data
+
       - store_artifacts:
           path: dummy-artifact.zip
           destination: dummy-large-file
