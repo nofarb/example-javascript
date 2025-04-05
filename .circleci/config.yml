@@ -3,6 +3,37 @@ orbs:
   codecov: codecov/codecov@3
 
 jobs:
+  stage-one:
+    executor: macos-executor
+    steps:
+      - run:
+          name: Stage One
+          command: |
+            echo "Starting stage one"
+            sleep 40
+            echo "Finished stage one"
+
+  stage-two:
+    executor: macos-executor
+    steps:
+      - run:
+          name: Stage Two
+          command: |
+            echo "Starting stage two"
+            sleep 30
+            echo "Finished stage two"
+
+  stage-three:
+    executor: macos-executor
+    steps:
+      - run:
+          name: Stage Three
+          command: |
+            echo "Starting stage three"
+            sleep 30
+            echo "Finished stage three"
+
+  
   build:
     docker:
       - image: cimg/node:current
@@ -35,3 +66,6 @@ workflow:
   build-test:
     jobs:
       - build
+      - stage-one
+      - stage-two
+      - stage-three
