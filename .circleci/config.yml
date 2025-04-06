@@ -8,6 +8,7 @@ jobs:
       - image: cimg/node:current
     steps:
       - checkout
+
       - run:
           name: Install dependencies
           command: |
@@ -43,6 +44,32 @@ jobs:
           destination: dummy-large-file
 
       - codecov/upload
+
+      - setup_remote_docker
+
+      - run:
+          name: Generate Dockerfile
+          command: |
+            echo "FROM alpine" > Dockerfile
+            echo "WORKDIR /app" >> Dockerfile
+            echo "COPY coverage /app/coverage" >> Dockerfile
+            echo "COPY dummy-artifact.zip /app/" >> Dockerfile
+            echo "CMD [\"ls\", \"-lhR\", \"/app\"]" >> Dockerfile
+
+      - run:
+          name: Build Docker image
+          command: |
+            docker build -t $DOCKERHUB_USERNAME/circleci-artifact-demo:$CIRCLE_SHA1 .
+
+      - run:
+          name: Authenticate with Docker Hub
+          command: |
+            echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+
+      - run:
+          name: Push Docker image
+          command: |
+            docker push $DOCKERHUB_USERNAME/circleci-artifact-demo:$CIRCLE_SHA1
 
 workflows:
   version: 2.1
