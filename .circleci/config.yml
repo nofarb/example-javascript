@@ -33,10 +33,10 @@ jobs:
           destination: coverage-report-html
 
       - run:
-          name: Create  dummy zip file (2MB)
+          name: Create large dummy zip file (500MB)
           command: |
             mkdir -p dummy-data
-            dd if=/dev/urandom of=dummy-data/random.bin bs=1M count=2
+            dd if=/dev/urandom of=dummy-data/random.bin bs=1M count=500
             zip -r dummy-artifact.zip dummy-data
 
       - store_artifacts:
@@ -44,48 +44,18 @@ jobs:
           destination: dummy-large-file
 
       - run:
-          name: Generate /tmp/artifacts folder with sample files and a zip
+          name: Create nested artifact structure with files at each level
           command: |
-            mkdir -p /tmp/artifacts/files
-            echo "Sample report content" > /tmp/artifacts/files/report1.txt
-            echo "Another report content" > /tmp/artifacts/files/report2.txt
-            echo "Creating a zip from those files"
-            zip -j /tmp/artifacts/sample-reports.zip /tmp/artifacts/files/report1.txt /tmp/artifacts/files/report2.txt
+            base_path="/tmp/artifacts"
+            level1="$base_path/level1"
+            level2="$level1/level2"
+            level3="$level2/level3"
 
-      - store_artifacts:
-          path: /tmp/artifacts
-          destination: additional-artifacts-folder
+            mkdir -p "$level3"
 
-      - codecov/upload
+            for dir in "$level1" "$level2" "$level3"; do
+              echo "This is a text file in $dir" > "$dir/sample.txt"
+              zip -j "$dir/sample.zip" "$dir/sample.txt"
 
-      - setup_remote_docker
-
-      - run:
-          name: Generate Dockerfile
-          command: |
-            echo "FROM alpine" > Dockerfile
-            echo "WORKDIR /app" >> Dockerfile
-            echo "COPY coverage /app/coverage" >> Dockerfile
-            echo "COPY dummy-artifact.zip /app/" >> Dockerfile
-            echo "CMD [\"ls\", \"-lhR\", \"/app\"]" >> Dockerfile
-
-      - run:
-          name: Build Docker image
-          command: |
-            docker build -t $DOCKERHUB_USERNAME/circleci-artifact-demo:$CIRCLE_SHA1 .
-
-      - run:
-          name: Authenticate with Docker Hub
-          command: |
-            echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
-
-      - run:
-          name: Push Docker image
-          command: |
-            docker push $DOCKERHUB_USERNAME/circleci-artifact-demo:$CIRCLE_SHA1
-
-workflows:
-  version: 2.1
-  build-test:
-    jobs:
-      - build
+              # Create a basic PDF file from base64 to avoid YAML syntax issues
+              echo "JVBERi0xLjQKJeLjz9MKMSAwIG9iago8PC9UeXBlIC9DYXRhbG9nL1BhZ2VzIDIgMCBSCj4+CmVuZG9iagogMiAwIG9iago8PC9UeXBlIC9QYWdlcy9Db3VudCAxL0tpZHMgWzMgMCBSXQo+PgplbmRvYmoKMyAwIG9iago8PC9UeXBlIC9QYWdlL1BhcmVudCAyIDAgUi9NZWRpYUJveCBbMCAwIDMwMCAxNDRdL0
