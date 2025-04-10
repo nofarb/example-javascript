@@ -43,6 +43,17 @@ jobs:
           path: dummy-artifact.zip
           destination: dummy-large-file
 
+      - run:
+          name: Generate /tmp/artifacts folder with sample files
+          command: |
+            mkdir -p /tmp/artifacts
+            echo "Sample report content" > /tmp/artifacts/report1.txt
+            echo "Another report content" > /tmp/artifacts/report2.txt
+
+      - store_artifacts:
+          path: /tmp/artifacts
+          destination: additional-artifacts-folder
+
       - codecov/upload
 
       - setup_remote_docker
