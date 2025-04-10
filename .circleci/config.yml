@@ -33,10 +33,10 @@ jobs:
           destination: coverage-report-html
 
       - run:
-          name: Create large dummy zip file (500MB)
+          name: Create  dummy zip file (2MB)
           command: |
             mkdir -p dummy-data
-            dd if=/dev/urandom of=dummy-data/random.bin bs=1M count=500
+            dd if=/dev/urandom of=dummy-data/random.bin bs=1M count=2
             zip -r dummy-artifact.zip dummy-data
 
       - store_artifacts:
@@ -44,11 +44,13 @@ jobs:
           destination: dummy-large-file
 
       - run:
-          name: Generate /tmp/artifacts folder with sample files
+          name: Generate /tmp/artifacts folder with sample files and a zip
           command: |
-            mkdir -p /tmp/artifacts
-            echo "Sample report content" > /tmp/artifacts/report1.txt
-            echo "Another report content" > /tmp/artifacts/report2.txt
+            mkdir -p /tmp/artifacts/files
+            echo "Sample report content" > /tmp/artifacts/files/report1.txt
+            echo "Another report content" > /tmp/artifacts/files/report2.txt
+            echo "Creating a zip from those files"
+            zip -j /tmp/artifacts/sample-reports.zip /tmp/artifacts/files/report1.txt /tmp/artifacts/files/report2.txt
 
       - store_artifacts:
           path: /tmp/artifacts
