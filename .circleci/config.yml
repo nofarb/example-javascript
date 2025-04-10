@@ -53,9 +53,50 @@ jobs:
 
             mkdir -p "$level3"
 
+            # Base64-encoded small valid PDF
+            pdf_base64="JVBERi0xLjQKJeLjz9MKMSAwIG9iago8PC9UeXBlIC9DYXRhbG9nL1BhZ2VzIDIgMCBSCj4+CmVuZG9iagogMiAwIG9iago8PC9UeXBlIC9QYWdlcy9Db3VudCAxL0tpZHMgWzMgMCBSXQo+PgplbmRvYmoKMyAwIG9iago8PC9UeXBlIC9QYWdlL1BhcmVudCAyIDAgUi9NZWRpYUJveCBbMCAwIDMwMCAxNDRdL0NvbnRlbnRzIDQgMCBSCj4+CmVuZG9iago0IDAgb2JqCjw8L0xlbmd0aCA0NAo+PnN0cmVhbQpCVC9GMTggVGYgMTAgMTAwIFRkIChIZWxsbyBmcm9tIHNhZmUgYmFzZTY0KSBUaiBFVAplbmRzdHJlYW0KZW5kb2JqCnhyZWYKMCA1CjAwMDAwMDAwMDAgNjU1MzUgZgowMDAwMDAwMDEwIDAwMDAwIG4KMDAwMDAwMDA2MCAwMDAwMCBuCjAwMDAwMDAxMTcgMDAwMDAgbgowMDAwMDAwMjIwIDAwMDAwIG4KdHJhaWxlcgo8PC9Sb290IDEgMCBSL1NpemUgNQo+PgpzdGFydHhyZWYKMzE1CiUlRU9GCg=="
+
             for dir in "$level1" "$level2" "$level3"; do
+              mkdir -p "$dir"
               echo "This is a text file in $dir" > "$dir/sample.txt"
               zip -j "$dir/sample.zip" "$dir/sample.txt"
+              echo "$pdf_base64" | base64 -d > "$dir/sample.pdf"
+            done
 
-              # Create a basic PDF file from base64 to avoid YAML syntax issues
-              echo "JVBERi0xLjQKJeLjz9MKMSAwIG9iago8PC9UeXBlIC9DYXRhbG9nL1BhZ2VzIDIgMCBSCj4+CmVuZG9iagogMiAwIG9iago8PC9UeXBlIC9QYWdlcy9Db3VudCAxL0tpZHMgWzMgMCBSXQo+PgplbmRvYmoKMyAwIG9iago8PC9UeXBlIC9QYWdlL1BhcmVudCAyIDAgUi9NZWRpYUJveCBbMCAwIDMwMCAxNDRdL0
+      - store_artifacts:
+          path: /tmp/artifacts
+          destination: additional-artifacts-folder
+
+      - codecov/upload
+
+      - setup_remote_docker
+
+      - run:
+          name: Generate Dockerfile
+          command: |
+            echo "FROM alpine" > Dockerfile
+            echo "WORKDIR /app" >> Dockerfile
+            echo "COPY coverage /app/coverage" >> Dockerfile
+            echo "COPY dummy-artifact.zip /app/" >> Dockerfile
+            echo "CMD [\"ls\", \"-lhR\", \"/app\"]" >> Dockerfile
+
+      - run:
+          name: Build Docker image
+          command: |
+            docker build -t $DOCKERHUB_USERNAME/circleci-artifact-demo:$CIRCLE_SHA1 .
+
+      - run:
+          name: Authenticate with Docker Hub
+          command: |
+            echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+
+      - run:
+          name: Push Docker image
+          command: |
+            docker push $DOCKERHUB_USERNAME/circleci-artifact-demo:$CIRCLE_SHA1
+
+workflows:
+  version: 2.1
+  build-test:
+    jobs:
+      - build
