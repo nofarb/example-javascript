@@ -33,10 +33,10 @@ jobs:
           destination: coverage-report-html
 
       - run:
-          name: Create large dummy zip file (500MB)
+          name: Create large dummy zip file (2MB)
           command: |
             mkdir -p dummy-data
-            dd if=/dev/urandom of=dummy-data/random.bin bs=1M count=500
+            dd if=/dev/urandom of=dummy-data/random.bin bs=1M count=2
             zip -r dummy-artifact.zip dummy-data
 
       - store_artifacts:
