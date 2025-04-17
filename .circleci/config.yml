@@ -2,7 +2,38 @@ version: 2.1
 orbs:
   codecov: codecov/codecov@3
 
+
 jobs:
+  test-multiline:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - run:
+          name: Set and write multiline content
+          command: |
+            MULTILINE_VAR='line1
+            line2 "nested"
+            line3 \t tabbed
+            line4 ends'
+            
+            # Save raw content to a file
+            echo "$MULTILINE_VAR" > multiline.txt
+
+            # Export for next step
+            echo "export MULTILINE_VAR=\"$MULTILINE_VAR\"" >> $BASH_ENV
+      - run:
+          name: Show saved file content
+          command: |
+            echo "🔹 From file:"
+            cat multiline.txt | sed -e 's/^/> /'
+      - run:
+          name: Show variable read back from env
+          command: |
+            echo "🔸 From env:"
+            echo "$MULTILINE_VAR" | sed -e 's/^/> /'
+
+
+
   build:
     docker:
       - image: cimg/node:current
@@ -100,3 +131,4 @@ workflows:
   build-test:
     jobs:
       - build
+      - test-multiline
