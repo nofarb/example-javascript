@@ -11,27 +11,34 @@ jobs:
       - run:
           name: Set and write multiline content
           command: |
-            MULTILINE_VAR='line1
-            line2 "nested"
-            line3 \t tabbed
+            echo 'Creating multiline output with escaped quotes...'
+
+            # Simulate customer bug string
+            ESCAPED_STRING='line1
+            line2 \"nested\"
+            line3 \"still nested\"
             line4 ends'
-            
-            # Save raw content to a file
-            echo "$MULTILINE_VAR" > multiline.txt
 
-            # Export for next step
-            echo "export MULTILINE_VAR=\"$MULTILINE_VAR\"" >> $BASH_ENV
+            # Save to file
+            echo "$ESCAPED_STRING" > multiline_escaped.txt
+
+            # Show raw file contents
+            echo "🔹 Saved to multiline_escaped.txt:"
+            cat multiline_escaped.txt | sed 's/^/> /'
+
+            # Persist the string to env for next step
+            echo "export ESCAPED_STRING=\"$ESCAPED_STRING\"" >> $BASH_ENV
       - run:
-          name: Show saved file content
+          name: Step 2 - Read escaped string from file and env
           command: |
-            echo "🔹 From file:"
-            cat multiline.txt | sed -e 's/^/> /'
-      - run:
-          name: Show variable read back from env
-          command: |
+            echo "🔸 From file:"
+            cat multiline_escaped.txt | sed 's/^/> /'
+
             echo "🔸 From env:"
-            echo "$MULTILINE_VAR" | sed -e 's/^/> /'
+            echo "$ESCAPED_STRING" | sed 's/^/> /'
 
+            echo "🔍 Debug output:"
+            printf '%q\n' "$ESCAPED_STRING"
 
 
   build:
