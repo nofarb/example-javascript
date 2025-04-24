@@ -21,13 +21,21 @@ jobs:
 
             # Save to file
             echo "$ESCAPED_STRING" > multiline_escaped.txt
+            echo '$ESCAPED_STRING' > multiline_escaped2.txt
+
 
             # Show raw file contents
             echo "🔹 Saved to multiline_escaped.txt:"
             cat multiline_escaped.txt | sed 's/^/> /'
 
+            # Show raw file contents
+            echo "🔹 Saved to multiline_escaped2.txt:"
+            cat multiline_escaped2.txt | sed 's/^/> /'
+
             # Persist the string to env for next step
             echo "export ESCAPED_STRING=\"$ESCAPED_STRING\"" >> $BASH_ENV
+            echo "export ESCAPED_STRING2=\'$ESCAPED_STRING\'" >> $BASH_ENV
+
       - run:
           name: Step 2 - Read escaped string from file and env
           command: |
@@ -39,6 +47,16 @@ jobs:
 
             echo "🔍 Debug output:"
             printf '%q\n' "$ESCAPED_STRING"
+
+
+            echo "🔸 From file:"
+            cat multiline_escaped2.txt | sed 's/^/> /'
+
+            echo "🔸 From env:"
+            echo "$ESCAPED_STRING2" | sed 's/^/> /'
+
+            echo "🔍 Debug output:"
+            printf '%q\n' "$ESCAPED_STRING2"
 
 
   build:
