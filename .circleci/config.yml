@@ -18,6 +18,7 @@ jobs:
             line2 \"nested\"
             line3 \"still nested\"
             line4 ends'
+        
 
             # Save to file
             echo "$ESCAPED_STRING" > multiline_escaped.txt
