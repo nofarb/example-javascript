@@ -4,62 +4,20 @@ orbs:
 
 
 jobs:
-  test-multiline:
+  build2:
     docker:
       - image: cimg/base:stable
     steps:
       - run:
-          name: Set and write multiline content
+          name: Create large dummy zip file (2MB)
           command: |
-            echo 'Creating multiline output with escaped quotes...'
+            mkdir -p dummy-data
+            dd if=/dev/urandom of=dummy-data/random.bin bs=1M count=2
+            zip -r dummy-artifact222.zip dummy-data
 
-            # Simulate customer bug string
-            ESCAPED_STRING='line1
-            line2 \"nested\"
-            line3 \"still nested\"
-            line4 ends'
-        
-
-            # Save to file
-            echo "$ESCAPED_STRING" > multiline_escaped.txt
-            echo '$ESCAPED_STRING' > multiline_escaped2.txt
-
-
-            # Show raw file contents
-            echo "🔹 Saved to multiline_escaped.txt:"
-            cat multiline_escaped.txt | sed 's/^/> /'
-
-            # Show raw file contents
-            echo "🔹 Saved to multiline_escaped2.txt:"
-            cat multiline_escaped2.txt | sed 's/^/> /'
-
-            # Persist the string to env for next step
-            echo "export ESCAPED_STRING=\"$ESCAPED_STRING\"" >> $BASH_ENV
-            echo "export ESCAPED_STRING2=\'$ESCAPED_STRING\'" >> $BASH_ENV
-
-      - run:
-          name: Step 2 - Read escaped string from file and env
-          command: |
-            echo "🔸 From file:"
-            cat multiline_escaped.txt | sed 's/^/> /'
-
-            echo "🔸 From env:"
-            echo "$ESCAPED_STRING" | sed 's/^/> /'
-
-            echo "🔍 Debug output:"
-            printf '%q\n' "$ESCAPED_STRING"
-
-
-            echo "🔸 From file:"
-            cat multiline_escaped2.txt | sed 's/^/> /'
-
-            echo "🔸 From env:"
-            echo "$ESCAPED_STRING2" | sed 's/^/> /'
-
-            echo "🔍 Debug output:"
-            printf '%q\n' "$ESCAPED_STRING2"
-
-
+      - store_artifacts:
+          path: dummy-artifact222.zip
+          destination: dummy-large-file
   build:
     docker:
       - image: cimg/node:current
@@ -157,4 +115,4 @@ workflows:
   build-test:
     jobs:
       - build
-      - test-multiline
+      - build2
