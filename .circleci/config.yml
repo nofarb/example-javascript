@@ -18,6 +18,10 @@ jobs:
       - store_artifacts:
           path: dummy-artifact222.zip
           destination: dummy-large-file
+
+      - store_artifacts:
+          path: dummy-artifact222.zip
+        
   build:
     docker:
       - image: cimg/node:current
