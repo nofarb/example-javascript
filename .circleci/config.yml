@@ -16,7 +16,7 @@ jobs:
             zip -r dummy-artifact222.zip dummy-data
 
       - store_artifacts:
-          path: dummy-artifact222.zip
+          path: dummy-artifact_not_exits.zip
           destination: dummy-large-file
 
       - store_artifacts:
