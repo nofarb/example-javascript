@@ -1,8 +1,7 @@
 name: Enforce License Compliance
 
 on:
-  pull_request:
-    branches: [main, master]
+
 
 jobs:
   enforce-license-compliance:
