@@ -9,7 +9,7 @@ export default defineConfig({
     },
     reporters: [
       'default',
-      ['vitest-junit-reporter', { outputFile: 'junit.xml' }]
+      ['junit', { outputFile: 'junit.xml' }]
     ]
   },
 })
