@@ -15,31 +15,8 @@ jobs:
         with:
           node-version: 18
 
-      - name: Clean install vitest 3.x directly (force fresh state)
-        run: |
-          rm -rf node_modules package-lock.json
-          npm init -y
-          npm install vitest@latest
-
-      - name: Add test script to package.json
-        run: |
-          npm set-script test "vitest run --coverage"
-
-      - name: Create vitest.config.ts (if not checked in already)
-        run: |
-          echo "import { defineConfig } from 'vitest/config'
-          export default defineConfig({
-            test: {
-              coverage: {
-                reporters: ['text', 'json', 'html', 'lcov'],
-                reportDir: 'coverage'
-              },
-              reporters: [
-                'default',
-                ['junit', { outputFile: 'junit.xml' }]
-              ]
-            }
-          })" > vitest.config.ts
+      - name: Install dependencies
+        run: npm ci
 
       - name: Run tests with coverage
         run: npm run test || true
