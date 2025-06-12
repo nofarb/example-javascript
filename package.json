@@ -3,16 +3,12 @@
   "version": "0.0.1",
   "description": "Codecov Example Javascript",
   "scripts": {
-    "test": "vitest run --coverage --coverageReporters=lcov --coverageReporters=text --coverageReporters=html"
-
+    "test": "vitest run --coverage"
   },
   "dependencies": {
-    "vitest": "^3.0.0",
-    "codecov": "^3.8.0"
+    "vitest": "^3.0.0"
   },
   "devDependencies": {
-    "jest": "^29.0.0",
-    "jest-environment-jsdom": "^29.0.0",
-    "codecov": "^3.8.0"
+    "vitest-junit-reporter": "^0.5.0"
   }
 }
