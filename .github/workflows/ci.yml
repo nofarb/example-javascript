@@ -18,19 +18,15 @@ jobs:
       - name: Clean install vitest 3.x directly (force fresh state)
         run: |
           rm -rf node_modules package-lock.json
+          npm init -y
           npm install vitest@latest
 
-      - name: Add vitest-junit reporter (built-in, no extra install needed)
+      - name: Add test script to package.json
         run: |
-          echo "{}" > package.json
-          npm install vitest@latest
+          npm set-script test "vitest run --coverage"
 
-      - name: Install dependencies (optional if you have others)
-        run: npm install
-
-      - name: Create vitest config (if not checked in already)
+      - name: Create vitest.config.ts (if not checked in already)
         run: |
-          mkdir -p test
           echo "import { defineConfig } from 'vitest/config'
           export default defineConfig({
             test: {
@@ -46,7 +42,7 @@ jobs:
           })" > vitest.config.ts
 
       - name: Run tests with coverage
-        run: npm run test || true  # Don't fail the build if tests fail (Codecov still collects)
+        run: npm run test || true
 
       - name: Upload code coverage to Codecov
         uses: codecov/codecov-action@v5
