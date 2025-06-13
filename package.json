@@ -2,10 +2,11 @@
   "name": "example-javascript",
   "version": "1.0.0",
   "scripts": {
-    "test": "jest --coverage"
+    "test": "jest --coverage",
+    "build": "vite build"
   },
   "devDependencies": {
-    "jest": "^28.0.0",  // Use the latest Jest version
+    "jest": "^28.0.0",
     "@jest/coverage": "^28.0.0"
   },
   "dependencies": {
