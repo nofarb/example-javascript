@@ -18,7 +18,7 @@ jobs:
           node-version: 18
 
       - name: Install dependencies
-        run: npm install
+        run: npm install vitest@latest @vitest/coverage-v8@latest
 
 
       - name: Verify Vitest installation
