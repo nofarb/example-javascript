@@ -37,8 +37,8 @@ jobs:
               include: ['app/**/*.test.js'],
               coverage: {
                 provider: 'v8',  # Use the V8 coverage provider for modern JS
-                reporters: ['lcov', 'text', 'json', 'html', 'cobertura'],  # Formats for coverage output
-                reportDir: 'coverage/lcov-report'  # Ensure coverage reports go to the lcov-report directory
+                reporters: ['lcov', 'text', 'json', 'html'],  # Formats for coverage output
+                reportDir: 'coverage/'  # Ensure coverage reports go to the lcov-report directory
               },
               reporters: [
                 'default',
@@ -46,6 +46,7 @@ jobs:
               ]
             }
           })" > vitest.config.ts
+
 
       # Uncomment this block if you eventually want bundle analysis enabled again:
       #
