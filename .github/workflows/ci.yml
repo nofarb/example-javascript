@@ -9,41 +9,24 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch the entire Git history
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
 
-      - name: Initialize clean package.json
-        run: |
-          npm init -y
-          npm install vitest@1.6.1 @vitest/coverage-v8@1.6.1
-          # Optional: only install Codecov bundle plugin if you want bundle analysis:
-          # npm install @codecov/vite-plugin@latest
+      - name: Install dependencies
+        run: npm install
 
-      - name: Add test & build scripts manually
-        run: |
-          jq '.scripts.test="vitest run --coverage"' package.json > tmp.json && mv tmp.json package.json
-          jq '.scripts.build="vite build"' package.json > tmp.json && mv tmp.json package.json
 
-      - name: Create vitest.config.ts
+      - name: Verify Vitest installation
         run: |
-          echo "import { defineConfig } from 'vitest/config'
-          export default defineConfig({
-            test: {
-              include: ['app/**/*.test.js'],
-              coverage: {
-                provider: 'v8',
-                reporters: ['text', 'json', 'html', 'lcov'],
-                reportDir: 'coverage'
-              },
-              reporters: [
-                'default',
-                ['junit', { outputFile: 'junit.xml' }]
-              ]
-            }
-          })" > vitest.config.ts
+          echo "Checking Vitest installation..."
+          which vitest || echo "Vitest not found!"  # Check if Vitest is installed
+          npm list vitest  # List the Vitest package to verify installation
+
 
       # Uncomment this block if you eventually want bundle analysis enabled again:
       #
@@ -67,10 +50,15 @@ jobs:
       #   run: npm run build
 
       - name: Run tests with coverage
-        run: npm run test || true
+        run: npm run test --coverage  || true
 
-      - name: List coverage files (debugging)
-        run: ls -R coverage
+      - name: List all files recursively (debugging step)
+        run: |
+          ls -R coverage
+          find . -type f -name "*coverage*"
+          find . -type f -name "*.json"
+          find . -type f -name "*.lcov*"
+
 
       - name: Upload code coverage to Codecov
         uses: codecov/codecov-action@v5
@@ -83,17 +71,8 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_ORG_TOKEN }}
 
-      - name: Install SonarQube scanner
-        run: npm install -g sonarqube-scanner
-
-      - name: Run SonarQube scanner
-        run: |
-          sonar-scanner \
-            -Dsonar.projectKey=nofarb_example-javascript \
-            -Dsonar.sources=app \
-            -Dsonar.organization=nofarb \
-            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info \
-            -Dsonar.host.url=${{ vars.SONAR_HOST_URL }}
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
+

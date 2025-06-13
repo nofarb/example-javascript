@@ -1,13 +1,14 @@
+
+
+
 {
-  "name": "example-javascript",
-  "version": "1.0.0",
   "scripts": {
-    "test": "vitest run --coverage"
+    "test": "vitest run --coverage",
+    "build": "vite build"
   },
   "dependencies": {
-    "vitest": "1.6.1"
-  },
-  "devDependencies": {
-    "@vitest/coverage-v8": "1.6.1"
+    "vitest": "1.6.1",
+    "@vitest/coverage-v8": "1.6.1",
+    "vite": "your-vite-version-here"
   }
 }
