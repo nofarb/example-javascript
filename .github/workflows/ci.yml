@@ -36,13 +36,13 @@ jobs:
             test: {
               include: ['app/**/*.test.js'],
               coverage: {
-                provider: 'v8',
-                reporters: ['text', 'json', 'html', 'lcov'],
-                reportDir: 'coverage'
+                provider: 'v8',  # Use the V8 coverage provider for modern JS
+                reporters: ['lcov', 'text', 'json', 'html', 'cobertura'],  # Formats for coverage output
+                reportDir: 'coverage/lcov-report'  # Ensure coverage reports go to the lcov-report directory
               },
               reporters: [
                 'default',
-                ['junit', { outputFile: 'junit.xml' }]
+                ['junit', { outputFile: 'junit.xml' }]  # Optional: For CI compatibility, include JUnit output
               ]
             }
           })" > vitest.config.ts
