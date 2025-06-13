@@ -5,11 +5,8 @@ export default defineConfig({
     include: ['app/**/*.test.js'],
     coverage: {
       provider: 'v8',
-      reporters: ['text', 'json', 'html', 'lcov'],
-      reportDir: 'coverage',
-      excludeNodeModules: true,
-      reportsDirectory: './coverage',
-      clean: true
+      reporters: ['lcov', 'text', 'json', 'html'],
+      reportDir: 'coverage'
     }
-  },
+  }
 })
