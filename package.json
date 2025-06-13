@@ -1,14 +1,9 @@
 {
-  "name": "example-javascript",
-  "version": "1.0.0",
   "scripts": {
-    "test": "jest --coverage",
-    "build": "vite build"
+    "test": "vitest run"  // Run Vitest tests
   },
   "devDependencies": {
-    "jest": "^28.0.0"
-  },
-  "dependencies": {
-    "vite": "^2.9.0"
+    "vitest": "^0.20.0",  // Ensure Vitest is installed
+    "vite": "^2.9.0"      // Vite for bundling (optional)
   }
 }
