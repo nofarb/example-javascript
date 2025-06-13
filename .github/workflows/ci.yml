@@ -87,3 +87,5 @@ jobs:
         uses: SonarSource/sonarqube-scan-action@v5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          sonar.projectKey: "nofarb_example-javascript"
+          sonar.organization: "nofarb"
