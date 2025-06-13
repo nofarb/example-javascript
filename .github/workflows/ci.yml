@@ -45,6 +45,9 @@ jobs:
       - name: Run tests with coverage
         run: npm run test || true
 
+      - name: List coverage files (debugging)
+        run: ls -R coverage
+
       - name: Upload code coverage to Codecov
         uses: codecov/codecov-action@v5
         env:
