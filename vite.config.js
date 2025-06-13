@@ -6,7 +6,11 @@ export default defineConfig({
     coverage: {
       provider: 'v8',               // Using v8 coverage provider for modern JavaScript
       reporters: ['lcov', 'json', 'html'], // Output coverage formats
-      reportDir: 'coverage',  // Directory for coverage reports
+      reportDir: 'coverage',
+      lcov: {
+        // Specify output path for LCOV file if necessary
+        outputDir: './coverage/lcov-reports'
+      }
     },
   }
 });
