@@ -6,11 +6,10 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporters: ['text', 'json', 'html', 'lcov'],
-      reportDir: 'coverage'
-    },
-    reporters: [
-      'default',
-      ['junit', { outputFile: 'junit.xml' }]
-    ]
-  }
+      reportDir: 'coverage',
+      excludeNodeModules: true,
+      reportsDirectory: './coverage',
+      clean: true
+    }
+  },
 })
