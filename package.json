@@ -10,11 +10,5 @@
   },
   "dependencies": {
     "vite": "^2.9.0"
-  },
-  "jest": {
-    "collectCoverage": true, 
-    "coverageDirectory": "coverage", 
-    "coverageReporters": ["lcov", "json", "text", "html"],  
-    "coveragePathIgnorePatterns": ["/node_modules/", "/tests/"] 
   }
 }
