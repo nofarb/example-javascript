@@ -18,8 +18,9 @@ jobs:
           node-version: 18
 
       - name: Install dependencies
-        run: npm install vitest --save-dev
-
+        run: |  
+          npm install vitest --save-dev
+          npm install c8 --save-dev
 
 
       # Uncomment this block if you eventually want bundle analysis enabled again:
