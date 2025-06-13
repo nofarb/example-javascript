@@ -1,13 +1,28 @@
-export function square(x) {
-    return x * x;
+class MathUtils {
+  static isEven(number) {
+    return number % 2 === 0;
   }
-  
-  export function cube(x) {
-    return x * x * x;
+
+  static isOdd(number) {
+    return number % 2 !== 0;
   }
-  
-  export function factorial(n) {
+
+  static square(number) {
+    return number * number;
+  }
+
+  static cube(number) {
+    return number * number * number;
+  }
+
+  static factorial(n) {
     if (n === 0) return 1;
-    return n * factorial(n - 1);
+    let result = 1;
+    for (let i = 1; i <= n; i++) {
+      result *= i;
+    }
+    return result;
   }
-  
+}
+
+module.exports = MathUtils;
