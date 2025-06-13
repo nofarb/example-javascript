@@ -18,7 +18,7 @@ jobs:
           node-version: 18
 
       - name: Install dependencies
-        run: nnpm install vitest --save-dev
+        run: npm install vitest --save-dev
 
 
 
