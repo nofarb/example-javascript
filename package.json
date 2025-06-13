@@ -12,9 +12,9 @@
     "vite": "^2.9.0"
   },
   "jest": {
-    "collectCoverage": true,  // Enable coverage collection
-    "coverageDirectory": "coverage", // Directory to store the coverage reports
-    "coverageReporters": ["lcov", "json", "text", "html"],  // Report formats to generate
-    "coveragePathIgnorePatterns": ["/node_modules/", "/tests/"] // Optionally ignore directories
+    "collectCoverage": true, 
+    "coverageDirectory": "coverage", 
+    "coverageReporters": ["lcov", "json", "text", "html"],  
+    "coveragePathIgnorePatterns": ["/node_modules/", "/tests/"] 
   }
 }
