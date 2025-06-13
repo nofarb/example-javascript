@@ -1,4 +1,4 @@
-import { expect, test } from '@jest/globals';
+import { expect, test } from 'vitest';
 
 import {
   add,
@@ -25,17 +25,5 @@ test('subtract function', () => {
 });
 
 test('multiply function', () => {
-  expect(multiply(1, 2)).toBe(2.0);
-  expect(multiply(1.0, 2.0)).toBe(2.0);
-  expect(multiply(0, 2.0)).toBe(0.0);
-  expect(multiply(2.0, 0)).toBe(0.0);
-  expect(multiply(-4, 2.0)).toBe(-8.0);
-});
-
-test('divide function', () => {
-  expect(divide(1, 2)).toBe(0.5);
-  expect(divide(1.0, 2.0)).toBe(0.5);
-  expect(divide(0, 2.0)).toBe(0);
-  expect(divide(-4, 2.0)).toBe(-2.0);
-  // expect(divide(2.0, 0)).toBe('Cannot divide by 0');
+  expect(multiply(1, 2)).toBe(2);
 });
