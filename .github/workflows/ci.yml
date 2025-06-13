@@ -89,7 +89,7 @@ jobs:
       - name: Run SonarQube scanner
         run: |
           sonar-scanner \
-            -Dsonar.projectKey=example-javascript \
+            -Dsonar.projectKey=nofarb_example-javascript \
             -Dsonar.sources=app \
             -Dsonar.organization=nofarb \
             -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info \
