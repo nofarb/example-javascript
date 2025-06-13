@@ -2,10 +2,10 @@ import { defineConfig } from 'vitest/config';  // Import Vitest config
 
 export default defineConfig({
   test: {
-    include: ['app/**/*.test.js'],  // Path to test files
+    include: ['app/**/*.test.js'], 
     coverage: {
-      provider: 'v8',               // Using v8 coverage provider for modern JavaScript
-      reporters: ['lcov'], // Output coverage formats
+      provider: 'v8',               
+      reporters: ['lcov', 'json', 'html'], 
       reportDir: 'coverage',
     },
   }
