@@ -5,8 +5,8 @@ export default defineConfig({
     include: ['app/**/*.test.js'],  // Path to test files
     coverage: {
       provider: 'v8',               // Using v8 coverage provider for modern JavaScript
-      reporters: ['lcov', 'text', 'json', 'html', 'cobertura'], // Output coverage formats
-      reportDir: 'coverage/lcov-report',  // Directory for coverage reports
+      reporters: ['lcov', 'json', 'html'], // Output coverage formats
+      reportDir: 'coverage',  // Directory for coverage reports
     },
   }
 });
