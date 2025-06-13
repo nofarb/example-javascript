@@ -74,6 +74,7 @@ jobs:
       - name: List coverage files (debugging)
         run: |
           ls -R coverage
+          ls -R coverage/lcov-report
           find . -type f -name "*coverage*"
           find . -type f -name "*.json"
           find . -type f -name "*.lcov*"
