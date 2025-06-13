@@ -85,7 +85,11 @@ jobs:
   
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5
+        with:
+          args: >
+            -Dsonar.projectKey=nofarb_example-javascript
+            -Dsonar.organization=nofarb
+            -Dsonar.verbose=true
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          sonar.projectKey: "nofarb_example-javascript"
-          sonar.organization: "nofarb"
+        
