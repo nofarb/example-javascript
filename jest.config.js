@@ -1,6 +1,6 @@
 module.exports = {
-  testEnvironment: 'jsdom',
   collectCoverage: true, // Enable coverage collection
-  coverageDirectory: 'coverage', // Set the output directory for coverage reports
-  coverageReporters: ['json', 'lcov', 'text', 'html'], // Specify formats for coverage reports
+  coverageReporters: ['lcov', 'json', 'html'], // Generate LCOV, JSON, and HTML reports
+  coverageDirectory: 'coverage', // Directory where the coverage reports will be saved
+  testEnvironment: 'node', // Or 'jsdom' depending on your needs
 };
