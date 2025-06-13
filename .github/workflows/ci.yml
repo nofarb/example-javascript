@@ -66,12 +66,6 @@ jobs:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
 
-      - name: Upload test results to Codecov
-        if: ${{ !cancelled() }}
-        uses: codecov/test-results-action@v1
-        with:
-          token: ${{ secrets.CODECOV_ORG_TOKEN }}
-
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5
         env:
