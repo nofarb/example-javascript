@@ -21,13 +21,6 @@ jobs:
         run: npm install
 
 
-      - name: Verify Vitest installation
-        run: |
-          echo "Checking Vitest installation..."
-          which vitest || echo "Vitest not found!"  # Check if Vitest is installed
-          npm list vitest  # List the Vitest package to verify installation
-
-
       # Uncomment this block if you eventually want bundle analysis enabled again:
       #
       # - name: Create vite.config.js (for Codecov Bundle Analysis)
