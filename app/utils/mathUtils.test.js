@@ -11,4 +11,9 @@ test('cube function', () => {
   expect(cube(-3)).toBe(-27);
 });
 
+test('cube2 function', () => {
+  expect(cube(2)).toBe(3);
+  expect(cube(-3)).toBe(-27);
+});
+
 // Intentionally leave factorial untested for now
