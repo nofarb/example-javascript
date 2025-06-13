@@ -1,9 +1,9 @@
 {
   "scripts": {
-    "test": "vitest run"  // Run Vitest tests
+    "test": "vitest run"  
   },
   "devDependencies": {
-    "vitest": "^0.20.0",  // Ensure Vitest is installed
-    "vite": "^2.9.0"      // Vite for bundling (optional)
+    "vitest": "^0.20.0",  
+    "vite": "^2.9.0"      
   }
 }
