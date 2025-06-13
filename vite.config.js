@@ -12,5 +12,5 @@ export default defineConfig({
       'default',
       ['junit', { outputFile: 'junit.xml' }]
     ]
-  },
+  }
 })
