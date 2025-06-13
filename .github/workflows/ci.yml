@@ -52,13 +52,13 @@ jobs:
       - name: Run tests with coverage
         run: npm run test --coverage  || true
 
-      - name: List coverage files (debugging)
+      - name: List all files recursively (debugging step)
         run: |
           ls -R coverage
-          ls -R coverage/lcov-report
           find . -type f -name "*coverage*"
           find . -type f -name "*.json"
           find . -type f -name "*.lcov*"
+
 
       - name: Upload code coverage to Codecov
         uses: codecov/codecov-action@v5
