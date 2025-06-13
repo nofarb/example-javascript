@@ -71,11 +71,4 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_ORG_TOKEN }}
 
-      - name: Run SonarQube scanner
-        uses: SonarSource/sonarqube-scan-action@v5
-        with:
-          sonar-project-key: 'nofarb_example-javascript'  # Replace with your project key
-          sonar-organization: 'nofarb'  # Replace with your organization name
-          sonar-sources: 'app'  # Path to your source code
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
