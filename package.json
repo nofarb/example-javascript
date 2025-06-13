@@ -1,11 +1,13 @@
 {
-  "name": "@codecov/example-javascript",
-  "version": "0.0.1",
-  "description": "Codecov Example Javascript",
+  "name": "example-javascript",
+  "version": "1.0.0",
   "scripts": {
     "test": "vitest run --coverage"
   },
   "dependencies": {
-    "vitest": "^3.0.0"
+    "vitest": "^3.2.3"
+  },
+  "devDependencies": {
+    "@vitest/coverage-v8": "^1.6.1"
   }
 }
