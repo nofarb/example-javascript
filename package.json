@@ -10,5 +10,11 @@
   },
   "dependencies": {
     "vite": "^2.9.0"
+  },
+  "jest": {
+    "collectCoverage": true,  // Enable coverage collection
+    "coverageDirectory": "coverage", // Directory to store the coverage reports
+    "coverageReporters": ["lcov", "json", "text", "html"],  // Report formats to generate
+    "coveragePathIgnorePatterns": ["/node_modules/", "/tests/"] // Optionally ignore directories
   }
 }
