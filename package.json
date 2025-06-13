@@ -6,8 +6,7 @@
     "build": "vite build"
   },
   "devDependencies": {
-    "jest": "^28.0.0",
-    "@jest/coverage": "^28.0.0"
+    "jest": "^28.0.0"
   },
   "dependencies": {
     "vite": "^2.9.0"
