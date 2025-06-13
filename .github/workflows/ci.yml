@@ -57,6 +57,9 @@ jobs:
           find . -type f -name "*.json"
           find . -type f -name "*.lcov*"
 
+      - name: Upload code coverage to codacy
+        run: bash <(curl -Ls https://coverage.codacy.com/get.sh)
+
 
       - name: Upload code coverage to Codecov
         uses: codecov/codecov-action@v5
