@@ -1,4 +1,4 @@
-name: Codecov CI with Vitest (final fully portable version)
+name: Codecov CI with Vitest and Bundle Analysis
 
 on: [push, pull_request]
 
@@ -19,10 +19,12 @@ jobs:
         run: |
           npm init -y
           npm install vitest@1.6.1 @vitest/coverage-v8@1.6.1
+          npm install @codecov/vite-plugin@latest
 
       - name: Add test script manually
         run: |
           jq '.scripts.test="vitest run --coverage"' package.json > tmp.json && mv tmp.json package.json
+          jq '.scripts.build="vite build"' package.json > tmp.json && mv tmp.json package.json
 
       - name: Create vitest.config.ts
         run: |
@@ -41,6 +43,25 @@ jobs:
               ]
             }
           })" > vitest.config.ts
+
+      - name: Create vite.config.js (for Codecov Bundle Analysis)
+        run: |
+          echo "import { defineConfig } from 'vite';
+          import { codecovVitePlugin } from '@codecov/vite-plugin';
+          export default defineConfig({
+            plugins: [
+              codecovVitePlugin({
+                enableBundleAnalysis: process.env.CODECOV_TOKEN !== undefined,
+                bundleName: 'example-javascript',
+                uploadToken: process.env.CODECOV_TOKEN
+              })
+            ]
+          })" > vite.config.js
+
+      - name: Build app for bundle analysis
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_ORG_TOKEN }}
+        run: npm run build
 
       - name: Run tests with coverage
         run: npm run test || true
