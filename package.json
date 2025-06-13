@@ -1,18 +1,13 @@
 {
-  "name": "@codecov/example-javascript",
-  "version": "0.0.1",
-  "description": "Codecov Example Javascript",
+  "name": "example-javascript",
+  "version": "1.0.0",
   "scripts": {
-    "test": "vitest run --coverage --coverageReporters=lcov --coverageReporters=text --coverageReporters=html"
-
+    "test": "vitest run --coverage"
   },
   "dependencies": {
-    "vitest": "^3.0.0",
-    "codecov": "^3.8.0"
+    "vitest": "1.6.1"
   },
   "devDependencies": {
-    "jest": "^29.0.0",
-    "jest-environment-jsdom": "^29.0.0",
-    "codecov": "^3.8.0"
+    "@vitest/coverage-v8": "1.6.1"
   }
 }

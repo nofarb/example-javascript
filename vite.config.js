@@ -1,11 +1,15 @@
 import { defineConfig } from 'vitest/config'
+import { defineConfig } from "vite";
+
 
 export default defineConfig({
   test: {
+    include: ['app/**/*.test.js'],
     coverage: {
-      provider: 'v8',  // Use V8 as the coverage provider
-      reporters: ['text', 'json', 'html', 'lcov'],  // Include 'html' and 'lcov' for HTML and LCOV reports
-      reportDir: 'coverage',  // Optional: specify the directory for coverage reports
-    },
-  },
+      provider: 'v8',
+      reporters: ['lcov', 'text', 'json', 'html'],
+      reportDir: 'coverage'
+    }
+  }
 })
+
