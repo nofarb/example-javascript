@@ -69,10 +69,14 @@ jobs:
       #   run: npm run build
 
       - name: Run tests with coverage
-        run: npm run test || true
+        run: npm run test --coverage
 
       - name: List coverage files (debugging)
-        run: ls -R coverage
+        run: |
+          ls -R coverage
+          find . -type f -name "*coverage*"
+          find . -type f -name "*.json"
+          find . -type f -name "*.lcov*"
 
       - name: Upload code coverage to Codecov
         uses: codecov/codecov-action@v5
