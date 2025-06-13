@@ -1,4 +1,4 @@
-name: Codecov CI with Vitest and Bundle Analysis + SonarQube
+name: Codecov CI with Vitest and SonarQube
 
 on: [push, pull_request]
 
@@ -19,9 +19,10 @@ jobs:
         run: |
           npm init -y
           npm install vitest@1.6.1 @vitest/coverage-v8@1.6.1
-          npm install @codecov/vite-plugin@latest
+          # Optional: only install Codecov bundle plugin if you want bundle analysis:
+          # npm install @codecov/vite-plugin@latest
 
-      - name: Add test script manually
+      - name: Add test & build scripts manually
         run: |
           jq '.scripts.test="vitest run --coverage"' package.json > tmp.json && mv tmp.json package.json
           jq '.scripts.build="vite build"' package.json > tmp.json && mv tmp.json package.json
@@ -44,24 +45,26 @@ jobs:
             }
           })" > vitest.config.ts
 
-      - name: Create vite.config.js (for Codecov Bundle Analysis)
-        run: |
-          echo "import { defineConfig } from 'vite';
-          import { codecovVitePlugin } from '@codecov/vite-plugin';
-          export default defineConfig({
-            plugins: [
-              codecovVitePlugin({
-                enableBundleAnalysis: process.env.CODECOV_TOKEN !== undefined,
-                bundleName: 'example-javascript',
-                uploadToken: process.env.CODECOV_TOKEN
-              })
-            ]
-          })" > vite.config.js
+      # Uncomment this block if you eventually want bundle analysis enabled again:
+      #
+      # - name: Create vite.config.js (for Codecov Bundle Analysis)
+      #   run: |
+      #     echo "import { defineConfig } from 'vite';
+      #     import { codecovVitePlugin } from '@codecov/vite-plugin';
+      #     export default defineConfig({
+      #       plugins: [
+      #         codecovVitePlugin({
+      #           enableBundleAnalysis: process.env.CODECOV_TOKEN !== undefined,
+      #           bundleName: 'example-javascript',
+      #           uploadToken: process.env.CODECOV_TOKEN
+      #         })
+      #       ]
+      #     })" > vite.config.js
 
-      - name: Build app for bundle analysis
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_ORG_TOKEN }}
-        run: npm run build
+      # - name: Build app for bundle analysis
+      #   env:
+      #     CODECOV_TOKEN: ${{ secrets.CODECOV_ORG_TOKEN }}
+      #   run: npm run build
 
       - name: Run tests with coverage
         run: npm run test || true
@@ -83,17 +86,13 @@ jobs:
       - name: Install SonarQube scanner
         run: npm install -g sonarqube-scanner
 
-      - name: Create sonar-project.properties
-        run: |
-          cat <<EOF > sonar-project.properties
-          sonar.projectKey=example-javascript
-          sonar.sources=app
-          sonar.javascript.lcov.reportPaths=coverage/lcov.info
-          sonar.host.url=${{ secrets.SONAR_HOST_URL }}
-          EOF
-
       - name: Run SonarQube scanner
-        run: sonar-scanner
+        run: |
+          sonar-scanner \
+            -Dsonar.projectKey=example-javascript \
+            -Dsonar.sources=app \
+            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info \
+            -Dsonar.host.url=${{ vars.SONAR_HOST_URL }}
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+          SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
