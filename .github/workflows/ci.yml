@@ -79,4 +79,3 @@ jobs:
           sonar-sources: 'app'  # Path to your source code
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
