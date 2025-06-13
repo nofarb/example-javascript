@@ -43,6 +43,14 @@ test('divide function', () => {
   expect(divide(5, "a")).toThrow(); // Invalid division input
 });
 
+test('divide2 function', () => {
+  expect(divide(10, 2)).toBe(5);  // Valid division
+  expect(divide(1, 0)).toBe("Cannot divide by 0"); // This tests the divide by zero scenario
+  expect(divide(-10, 2)).toBe(-5); // Negative division
+  expect(divide(10, -2)).toBe(-5); // Negative division with swapped operands
+});
+
+
 test('floating-point operations', () => {
   expect(add(0.1, 0.2)).toBeCloseTo(0.3, 5); // Floating point precision
   expect(subtract(0.3, 0.1)).toBeCloseTo(0.2, 5); // Floating point subtraction
