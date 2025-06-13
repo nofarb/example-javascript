@@ -1,6 +1,6 @@
-name: Codecov CI with Vitest (fully dynamic build)
+name: Codecov CI with Vitest (final fully portable version)
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
   test:
@@ -20,8 +20,9 @@ jobs:
           npm init -y
           npm install vitest@1.6.1 @vitest/coverage-v8@1.6.1
 
-      - name: Add test script to package.json
-        run: npm set-script test "vitest run --coverage"
+      - name: Add test script manually
+        run: |
+          jq '.scripts.test="vitest run --coverage"' package.json > tmp.json && mv tmp.json package.json
 
       - name: Create vitest.config.ts
         run: |
