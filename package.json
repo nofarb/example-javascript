@@ -2,13 +2,13 @@
   "name": "example-javascript",
   "version": "1.0.0",
   "scripts": {
-    "test": "vitest run --coverage",
-    "build": "vite build"
+    "test": "jest --coverage"
+  },
+  "devDependencies": {
+    "jest": "^28.0.0",  // Use the latest Jest version
+    "@jest/coverage": "^28.0.0"
   },
   "dependencies": {
-    "vitest": "1.6.1",
-    "@vitest/coverage-v8": "1.6.1",
-    "vite": "latest"
-  },
-  "devDependencies": {}
+    "vite": "^2.9.0"
+  }
 }
