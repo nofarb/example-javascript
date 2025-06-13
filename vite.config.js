@@ -1,12 +1,12 @@
-import { defineConfig } from 'vitest/config';  // Import Vitest config
+import { defineConfig } from 'vitest/config';  
 
 export default defineConfig({
   test: {
     include: ['app/**/*.test.js'], 
     coverage: {
-      provider: 'v8',               
-      reporters: ['lcov', 'json', 'html'], 
-      reportDir: 'coverage',
+      provider: 'v8',  
+      reporters: ['lcov', 'json', 'html'],  
+      reportDir: 'coverage',  
     },
   }
 });
