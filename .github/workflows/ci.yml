@@ -1,6 +1,6 @@
-name: Codecov CI with Vitest
+name: Codecov CI with Vitest (fully dynamic build)
 
-on: [push, pull_request]
+on: [push]
 
 jobs:
   test:
@@ -15,8 +15,31 @@ jobs:
         with:
           node-version: 18
 
-      - name: Install dependencies
-        run: npm ci
+      - name: Initialize clean package.json
+        run: |
+          npm init -y
+          npm install vitest@1.6.1 @vitest/coverage-v8@1.6.1
+
+      - name: Add test script to package.json
+        run: npm set-script test "vitest run --coverage"
+
+      - name: Create vitest.config.ts
+        run: |
+          echo "import { defineConfig } from 'vitest/config'
+          export default defineConfig({
+            test: {
+              include: ['app/**/*.test.js'],
+              coverage: {
+                provider: 'v8',
+                reporters: ['text', 'json', 'html', 'lcov'],
+                reportDir: 'coverage'
+              },
+              reporters: [
+                'default',
+                ['junit', { outputFile: 'junit.xml' }]
+              ]
+            }
+          })" > vitest.config.ts
 
       - name: Run tests with coverage
         run: npm run test || true
