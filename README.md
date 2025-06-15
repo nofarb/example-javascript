@@ -5,7 +5,7 @@
 This example repository shows how Codecov can be integrated with a simple javascript project. It uses **GitHub Actions** and **CircleCI** as CI/CD providers and **jest** as the coverage provider.
 
 For more information, please see the links below.
-
+ 
 ## Links
 - [Quick Start](https://docs.codecov.com/docs/quick-start)
 - [GitHub Tutorial](https://docs.codecov.com/docs/github-tutorial)
