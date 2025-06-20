@@ -11,6 +11,23 @@ class MathUtils {
     return number * number;
   }
 
+  static bla(number) {
+    return number * number;
+    if (number === 0) return 0;
+    if (number === 1) return 1;
+    return 20;
+  }
+
+  static bla2(n) {
+    if (n === 0) 
+      return 20;
+    {
+    }
+    else{
+      return 30;
+    }
+  }
+
   static cube(number) {
     return number * number * number;
   }
