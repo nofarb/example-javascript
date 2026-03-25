@@ -1,0 +1,76 @@
+version: 2.1
+
+jobs:
+  inspect-gen2-large:
+    machine:
+      image: ubuntu-2004:current
+    resource_class: large
+    steps:
+      - run:
+          name: Inspect machine details
+          command: |
+            set -euxo pipefail
+
+            echo "=== Basic OS info ==="
+            uname -a
+            cat /etc/os-release || true
+
+            echo
+            echo "=== CPU / memory ==="
+            nproc || true
+            lscpu || true
+            free -h || true
+
+            echo
+            echo "=== Block devices ==="
+            lsblk || true
+
+            echo
+            echo "=== DMI / virtualization hints ==="
+            sudo dmidecode -s system-manufacturer || true
+            sudo dmidecode -s system-product-name || true
+            sudo dmidecode -s bios-vendor || true
+            systemd-detect-virt || true
+
+            echo
+            echo "=== Hypervisor / kernel messages ==="
+            dmesg | egrep -i 'hypervisor|kvm|xen|nitro|google|amazon|gcp|aws' | tail -50 || true
+
+            echo
+            echo "=== Cloud metadata probes ==="
+            echo "--- AWS IMDS ---"
+            TOKEN=$(curl -sS -m 2 -X PUT "http://169.254.169.254/latest/api/token" \
+              -H "X-aws-ec2-metadata-token-ttl-seconds: 60" || true)
+            if [ -n "${TOKEN:-}" ]; then
+              echo "AWS metadata reachable"
+              curl -sS -m 2 -H "X-aws-ec2-metadata-token: $TOKEN" \
+                http://169.254.169.254/latest/meta-data/instance-type || true
+              curl -sS -m 2 -H "X-aws-ec2-metadata-token: $TOKEN" \
+                http://169.254.169.254/latest/dynamic/instance-identity/document || true
+            else
+              echo "AWS metadata not reachable"
+            fi
+
+            echo
+            echo "--- GCP metadata ---"
+            if curl -sS -m 2 -H "Metadata-Flavor: Google" \
+              http://metadata.google.internal/computeMetadata/v1/instance/machine-type >/dev/null 2>&1; then
+              echo "GCP metadata reachable"
+              curl -sS -m 2 -H "Metadata-Flavor: Google" \
+                http://metadata.google.internal/computeMetadata/v1/instance/machine-type || true
+              curl -sS -m 2 -H "Metadata-Flavor: Google" \
+                http://metadata.google.internal/computeMetadata/v1/instance/cpu-platform || true
+              curl -sS -m 2 -H "Metadata-Flavor: Google" \
+                http://metadata.google.internal/computeMetadata/v1/project/project-id || true
+            else
+              echo "GCP metadata not reachable"
+            fi
+
+            echo
+            echo "=== Summary ==="
+            echo "resource_class=large.gen2"
+
+workflows:
+  inspect:
+    jobs:
+      - inspect-gen2-large
